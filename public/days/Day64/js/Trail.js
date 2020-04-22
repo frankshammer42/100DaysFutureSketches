@@ -108,7 +108,7 @@ function moveCam(){
 
 function addCircleLines(){
     let randomScale = 1000;
-    let totalNumber = 5000;
+    let totalNumber = 2000;
     for (let i=0; i<totalNumber; i++){
         let randomInit = new THREE.Vector3(Math.random()*randomScale - randomScale/2, Math.random()*randomScale - randomScale/2, Math.random()*randomScale - randomScale/2);
         let newTrail = new PersonPoint(1600, 0, randomInit);
