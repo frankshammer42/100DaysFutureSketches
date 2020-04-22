@@ -1,0 +1,12 @@
+{
+  "name": "100DaysFutureSketches",
+  "description": "Server to host some of my sketches",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": ">=2.5.5",
+    "express": "^4.16.4"
+  }
+}
