@@ -1,0 +1,16 @@
+#container {
+   margin: auto;
+   overflow: hidden;
+}
+
+#overlay {
+    background-color: #000000;
+    color: #ffffff;
+    opacity: 0.8;
+    font-size: 25px;
+    width: 1px;
+    height: 1px;
+    position: absolute;
+    top: 20%;
+    left: 20%;
+}

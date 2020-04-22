@@ -15,6 +15,6 @@ app.get('/', function(req, res) {
 });
 
 let server = app.listen(process.env.PORT || 3000, function() {
-	console.log('Popeye server is running on', server.address().port);
+	console.log('Future Sketch Server is Running on', server.address().port);
 });
 
