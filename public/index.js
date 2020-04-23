@@ -5,8 +5,6 @@ function compare(a, b){
     b = b.slice(3, b.length);
     a = parseInt(a);
     b = parseInt(b);
-    console.log(a);
-    console.log(b);
     if (a > b){
         return 1;
     }
