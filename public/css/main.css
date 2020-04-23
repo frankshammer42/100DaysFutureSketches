@@ -1,0 +1,24 @@
+body {
+    height: 100vh;
+    width: 100vh;
+    background: black;
+    margin: 0;
+}
+
+.DayButtonContainer {
+    text-align: center;
+    width: 100vw;
+}
+
+.DayButton{
+    position: relative;
+    background: black;
+    width: 200px;
+    height: 100px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 25px;
+    color: white;
+    border:0.1em solid #FFFFFF;
+}
+
