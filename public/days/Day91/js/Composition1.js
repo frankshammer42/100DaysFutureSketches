@@ -5,10 +5,14 @@ let container;
 let raycaster;
 let renderer;
 let controls;
-//Create curves
-let curve;
-let curves = [];
-let drawProcess = 0;
+//
+let cube;
+let cubeNumber = 100;
+let cubes = [];
+let line;
+let step;
+let maxSegmentCount = 500;
+
 //Post Processing
 let composer;
 let clock ;
@@ -89,6 +93,7 @@ WebMidi.enable(function (err) {
     // waveFolder.add(wave.material.uniforms.scale.value, "y", 0.0, 3.5).name("scale y");
 });
 
+
 //Main Loop------------------------------------------------------
 init();
 animate();
@@ -110,9 +115,9 @@ function init() {
     // camera.position.z = 500;
     // camera
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera.position.x = 38250;
-    camera.position.y = 39441;
-    camera.position.z = 45788;
+    camera.position.x = -36806.65;
+    camera.position.y = 3041;
+    camera.position.z = 74.02;
     camera.far = 1000000;
     camera.updateProjectionMatrix();
     // geometry
@@ -126,11 +131,21 @@ function init() {
     renderer.gammaOutput = true;
     container.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
-    //create Curve
-    // let start = new THREE.Vector3(0, 0, 0);
-    // curve = new Curve(start);
-    // scene.add(curve.sourceCurve);
-    createCurves();
+    //
+    step = 100;
+    let start = new THREE.Vector3(-4000, 2000, 0);
+    let end = new THREE.Vector3(4000, 2000, 0);
+    // line = new Line(start, end, 5, 4000);
+    // scene.add(line.line);
+    // cube = new Cube(50,0,0, 500, 2000, 500);
+    // cube.stepLength = 2;
+    // scene.add(cube.cubeCenter);
+    // scene.add(cube.container);
+    // setTimeout(moveToSide, 10000);
+    // cube  = new Cube(0, 0,0, 100, 500, 100, 2, false);
+    // scene.add(cube.cubeCenter);
+    createCircleCubes(1500);
+    //------------------------------------------Post Processing
     clock = new THREE.Clock();
     let kernel = [
         "varying vec2 vUv;",
@@ -329,48 +344,81 @@ function init() {
     });
 
     composer.addPass(wave);
-    // let postEffectFolder = gui.addFolder("post effects");
-    // let negativeFolder = postEffectFolder.addFolder("negative");
-    // negativeFolder.add(negative.material.uniforms.t, "value", 0.0, 1.0).name("t");
-    //
-    // let rgbShiftFolder = postEffectFolder.addFolder("rgb shift");
-    // rgbShiftFolder.add(rgbShift.material.uniforms.amplitude, "value", 0.0, 0.4).name("amplitude");
-    // rgbShiftFolder.add(rgbShift.material.uniforms.speed, "value", 0.0, 1.0).name("speed");
-    //
-    // let waveFolder = postEffectFolder.addFolder("wave");
-    // waveFolder.add(wave.material.uniforms.intensity, "value", 0.0, 0.5).name("intensity");
-    // waveFolder.add(wave.material.uniforms.scale.value, "x", 0.0, 3.5).name("scale x");
-    // waveFolder.add(wave.material.uniforms.scale.value, "y", 0.0, 3.5).name("scale y");
+
+
+
+
+    // let cube1  = new Cube(-250, 0,0, 100, 500, 100, 2, true);
+    // scene.add(cube1.cubeCenter);
+    // let cube2  = new Cube(0, 0,-250, 100, 500, 100, 0, false);
+    // scene.add(cube2.cubeCenter);
+    // let cube3  = new Cube(0, 0,250, 100, 500, 100, 0,  true);
+    // scene.add(cube3.cubeCenter);
+    // cubes.push(cube0);
+    // cubes.push(cube1);
+    // cubes.push(cube2);
+    // cubes.push(cube3);
 }
 
-function createCurves(){
-    for (let i=0; i<5; i++){
-        let randomX = Math.random()*20000 - 10000;
-        let randomY = Math.random()*20000 - 10000;
-        let randomZ = Math.random()*20000 - 10000;
-        let start = new THREE.Vector3(randomX, randomY, randomZ);
-        let newCurve = new Curve(start);
-        // for (let j=0; j<newCurve.curveCircles.length; j++){
-        //     scene.add(newCurve.curveCircles[j]);
-        // }
-        curves.push(newCurve);
+function moveToSide(){
+    let target = new THREE.Vector3(-9232, 18.5, -500);
+    moveCamera(target, 25000);
+}
+
+
+function createCircleCubes(radius){
+    for (let i=0; i<maxSegmentCount; i++){
+        let theta = (i/maxSegmentCount) * 2 * Math.PI;
+        let x = Math.cos(theta)*radius;
+        let z = Math.sin(theta)*radius;
+        let newCube;
+        if (i > maxSegmentCount/2){
+            newCube  = new Cube(x, -15000, z, 100, 500, 100, 2, true);
+        }
+        else{
+            newCube  = new Cube(x, -15000, z, 100, 500, 100, 2, true);
+        }
+        newCube.cubeCenter.rotation.y = 2*Math.PI - theta;
+        scene.add(newCube.cubeCenter);
+        cubes.push(newCube);
     }
 }
 
-function distance(p1, p2){
-    let diff_x = p1[0] - p2[0];
-    let diff_y = p1[1] - p2[1];
-    let diff_z = p1[2] - p2[2];
-    let diffVector = new THREE.Vector3(diff_x, diff_y, diff_z);
-    return diffVector.length();
-}
 
-function moveSide(){
-    console.log("start moving");
-    let destination = new THREE.Vector3(-1558.75, 4464.33, 19432.96);
-    moveCamera(destination, 9000);
-}
 
+
+
+
+
+// function createCities(){
+//     for (let i=0; i<500; i++){
+//         // let currentX = start.x + i*step;
+//         let randomX = generateRandomNumberInRange(-2000, 2000);
+//         let randomY = generateRandomNumberInRange(-2000, 2000);
+//         let randomZ = generateRandomNumberInRange(-2000, 2000);
+//         // let randomRotationStep = generateRandomNumberInRange(-0.01, 0.01);
+//         let randomRotationStep = generateRandomNumberInRange(0, 1);
+//         if (randomRotationStep > 0.5){
+//             randomRotationStep = -0.01;
+//         }
+//         else{
+//             randomRotationStep = 0.01;
+//         }
+//         // let newCube = new Cube(currentX, start.y, -1000, 50, 200, 50);
+//         let newCube = new Cube(randomX, randomY, randomZ, 50, 200, 50);
+//         newCube.stepLength = Math.random()*10;
+//         newCube.rotationStep = randomRotationStep;
+//         scene.add(newCube.cubeCenter);
+//         cubes.push(newCube);
+//     }
+//     // for (let i=0; i<80; i++){
+//     //     let currentX = start.x + i*step;
+//     //     let newCube = new Cube(currentX, -start.y, 0, 50, 200, 50);
+//     //     newCube.stepLength = Math.random()*10;
+//     //     scene.add(newCube.container);
+//     //     cubes.push(newCube);
+//     // }
+// }
 
 function moveCamera(target, tweenTime){
     let deepTripPosition = new TWEEN.Tween( controls.object.position )
@@ -380,7 +428,6 @@ function moveCamera(target, tweenTime){
             z: target.z
         }, tweenTime)
         .easing( TWEEN.Easing.Cubic.InOut ).onUpdate( function () {
-            console.log("whatever man");
         })
         .start();
 }
@@ -391,33 +438,30 @@ function generateRandomNumberInRange(min, max) {
     return highlightedNumber;
 }
 
-
-
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-function chooseRandomSample(max){
-    let result = Math.floor(Math.random()*max);
-    return result;
-}
-
 function animate() {
-    controls.update(); // controls.update();
-    for (let i=0; i<curves.length; i++){
-        if (drawProcess < curves[i].curveCircles.length){
-            scene.add(curves[i].curveCircles[drawProcess].sourceCircle);
-        }
-        curves[i].update();
-    }
-    drawProcess+=1;
-    // sc.update();
-    // generateCircles(30, 20);
-    // closureCircle.update();
+    // cube.update();
     console.log(controls.object.position);
+    for (let i=0; i<cubes.length; i++){
+        cubes[i].update();
+        if (cubes[i].replicate){
+            let newCube = new Cube(cubes[i].x, cubes[i].y, cubes[i].z, 100, 500, 100, cubes[i].rotationAxis, cubes[i].positiveRotation);
+            newCube.cubeCenter.rotation.y = cubes[i].cubeCenter.rotation.y;
+            scene.add(newCube.cubeCenter);
+            cubes[i].alreadyReplicated = true;
+            cubes[i].replicate = false;
+            cubes[i].upSpeed *= 0.6;
+            cubes.push(newCube);
+        }
+    }
+    // line.update();
     TWEEN.update();
+    controls.update(); // controls.update();
     requestAnimationFrame( animate );
     composer.render();
 }
@@ -425,5 +469,13 @@ function animate() {
 function render() {
     renderer.render( scene, camera );
 }
+
+
+
+
+
+
+
+
 
 
