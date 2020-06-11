@@ -24,7 +24,7 @@ function getAllCurrentFolders(){
                 buttonContainer.classList.add("DayButtonContainer");
                 let button = document.createElement('button');
                 button.classList.add("DayButton");
-                button.innerText = filenames[i];
+                button.innerText = filenames[i].slice(3, filenames[i].length);
                 buttonContainer.appendChild(button);
                 document.body.appendChild(buttonContainer);
                 let path = "/days/" + filenames[i] + "/home.html";
