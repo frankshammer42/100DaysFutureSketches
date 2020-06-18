@@ -354,7 +354,7 @@ function init() {
         }};
     gui.add(closeObject, 'moveClose');
 
-    gui.add(shaderMoveTweenTimeObject, "shaderMoveTweenTime", 100, 10000).name("Tween Time");
+    gui.add(shaderMoveTweenTimeObject, "shaderMoveTweenTime", 100, 100000).name("Tween Time");
 
 }
 
